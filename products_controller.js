@@ -1,8 +1,9 @@
 module.exports = {
   create: (req, res, next) => {
     const db = req.app.get('db');
+    const { name, description, price, image_url } = req.body;
 
-    db.create_product()
+    db.create_product([name, description, price, image_url])
       .then(() => res.sendStatus(200))
       .catch(err => {
         res.status(500).send({
@@ -14,8 +15,9 @@ module.exports = {
 
   getOne: (req, res, next) => {
     const db = req.app.get('db');
+    const { id } = req.params;
 
-    db.read_product()
+    db.read_product(id)
       .then(product => res.status(200))
       .catch(err => {
         res.status(500).send({
@@ -40,8 +42,9 @@ module.exports = {
 
   update: (req, res, nect) => {
     const db = res.app.get('db');
+    const { params, query } = req;
 
-    db.update_product()
+    db.update_product([params.id, query.desc])
       .then(() => res.sendStatus(200))
       .catch(err => {
         res.status(500).send({
@@ -53,6 +56,7 @@ module.exports = {
 
   delete: (req, res, next) => {
     const db = res.app.get('db');
+    const { id } = req.params;
 
     db.delete_product()
       .then(() => res.sendStatus(200))
